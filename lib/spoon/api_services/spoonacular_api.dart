@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:recipefinal/spoon/recipe_model.dart';
+import 'package:recipefinal/spoon/model/recipe_model.dart';
 
 class SpoonacularApi {
   final String apiKey;

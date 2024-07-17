@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipefinal/spoon/recipe_model.dart';
-import 'package:recipefinal/spoon/spoonacular_api.dart';
+import 'package:recipefinal/spoon/model/recipe_model.dart';
+import 'package:recipefinal/spoon/api_services/spoonacular_api.dart';
 
 class RecipeDetails extends StatelessWidget {
   final int recipeId;

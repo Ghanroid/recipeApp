@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipefinal/login.dart';
-import 'package:recipefinal/signup.dart';
+import 'package:recipefinal/spoon/screen/login.dart';
+import 'package:recipefinal/spoon/screen/signup.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});

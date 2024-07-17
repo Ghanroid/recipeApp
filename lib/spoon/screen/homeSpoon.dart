@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:recipefinal/spoon/recipe_model.dart';
-import 'package:recipefinal/spoon/recipeinfodisplay.dart';
-import 'package:recipefinal/spoon/spoonacular_api.dart';
+import 'package:recipefinal/spoon/model/recipe_model.dart';
+import 'package:recipefinal/spoon/screen/recipeinfodisplay.dart';
+import 'package:recipefinal/spoon/api_services/spoonacular_api.dart';
 
 class SpoonMyHomePage extends StatefulWidget {
   @override

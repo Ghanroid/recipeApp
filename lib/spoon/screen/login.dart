@@ -1,30 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipefinal/spoon/screen/signup.dart';
+import 'package:recipefinal/spoon/screen/searchPage.dart';
 
-import 'package:recipefinal/login.dart';
-import 'package:recipefinal/spoon/searchPage.dart';
-
-class Signtp extends StatefulWidget {
-  const Signtp({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<Signtp> createState() => _SigntpState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SigntpState extends State<Signtp> {
+class _LoginPageState extends State<LoginPage> {
   late Size mediaSize;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
   bool togglepassword = true;
 
-  signup(String myemail, String mypassword) async {
+  login(String myemail, String mypassword) async {
     if (myemail == "" && mypassword == "") {
       return await showDialog(
           context: context,
           builder: (context) {
-            // ignore: avoid_unnecessary_containers
             return Container(
               child: AlertDialog(
                 title: const Text("Enter Required Fields"),
@@ -39,30 +35,25 @@ class _SigntpState extends State<Signtp> {
             );
           });
     } else {
-      // ignore: unused_local_variable
-
       try {
-        UserCredential usercred = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-                email: myemail, password: mypassword);
-
-        FirebaseFirestore.instance
-            .collection("Users")
-            .doc(usercred.user!.email)
-            .set({
-          'username': usernameController.text,
-          'email': emailController.text
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: emailController.text, password: passwordController.text)
+            .then((value) {
+          if (myemail == "sh@gmail.com" && mypassword == "123456") {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => SearchPage()));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => SearchPage()));
+          }
         });
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SearchPage()));
       } on FirebaseAuthException catch (ex) {
         return await showDialog(
             context: context,
             builder: (context) {
-              // ignore: avoid_unnecessary_containers
               return Container(
                 child: AlertDialog(
-                  // ignore: unnecessary_string_interpolations
                   title: Text("${ex.code.toString()}"),
                   actions: [
                     TextButton(
@@ -84,6 +75,7 @@ class _SigntpState extends State<Signtp> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[900],
+        // Colors.deepOrange[300],
         image: DecorationImage(
           image: const AssetImage("assets/images/recipe.png"),
           fit: BoxFit.cover,
@@ -104,9 +96,8 @@ class _SigntpState extends State<Signtp> {
 
   Widget _buildTop() {
     return SizedBox(
-      width: mediaSize.width,
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      width: MediaQuery.of(context).size.width,
+      child: const Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
@@ -147,7 +138,7 @@ class _SigntpState extends State<Signtp> {
   Widget _buildForm() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height - 250,
+      height: MediaQuery.of(context).size.height - 300,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,20 +151,18 @@ class _SigntpState extends State<Signtp> {
                   fontWeight: FontWeight.w500),
             ),
             _buildGreyText("Please login with your information"),
-            const SizedBox(height: 30),
-            _buildGreyText("User Name"),
-            _buildInputFieldperson(usernameController, false),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
             _buildGreyText("Email address"),
             _buildInputField(emailController, false),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             _buildGreyText("Password"),
             _buildInputField(passwordController, true),
-            const SizedBox(height: 30),
-            _buildLoginButton(),
             const SizedBox(height: 20),
+            _buildLoginButton(),
+            const SizedBox(height: 30),
             _buildRememberForgot(),
             const SizedBox(height: 20),
+            _buildOtherLogin(),
           ],
         ),
       ),
@@ -183,8 +172,6 @@ class _SigntpState extends State<Signtp> {
   Widget _buildGreyText(String text) {
     return Text(
       text,
-      //style: const TextStyle(color: Colors.grey, fontSize: 16),
-
       style:
           const TextStyle(color: Color.fromARGB(255, 65, 65, 65), fontSize: 16),
     );
@@ -216,33 +203,22 @@ class _SigntpState extends State<Signtp> {
           );
   }
 
-  Widget _buildInputFieldperson(
-      TextEditingController controller, bool isPassword) {
-    return TextField(
-      controller: controller,
-      decoration: const InputDecoration(
-        suffixIcon: Icon(Icons.person),
-      ),
-    );
-  }
-
   Widget _buildRememberForgot() {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
           children: [
-            _buildGreyText("I have an account!!"),
+            _buildGreyText("Don't have an account?"),
           ],
         ),
         GestureDetector(
           onTap: () {
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const LoginPage()));
+                MaterialPageRoute(builder: (context) => const Signtp()));
           },
           child: const Text(
-            "LogIn ",
+            "SignUp ",
             style: TextStyle(
                 color: Colors.deepOrange,
                 fontWeight: FontWeight.bold,
@@ -258,8 +234,7 @@ class _SigntpState extends State<Signtp> {
       onPressed: () {
         debugPrint("Email : ${emailController.text}");
         debugPrint("Password : ${passwordController.text}");
-
-        signup(emailController.text.toString(),
+        login(emailController.text.toString(),
             passwordController.text.toString());
       },
       style: ElevatedButton.styleFrom(
@@ -269,8 +244,25 @@ class _SigntpState extends State<Signtp> {
           minimumSize: const Size.fromHeight(60),
           backgroundColor: Colors.orange),
       child: const Text(
-        "S I G N U P",
+        "L O G I N",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildOtherLogin() {
+    return Center(
+      child: Column(
+        children: [
+          _buildGreyText("Or Login with"),
+          const SizedBox(height: 15),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Tab(icon: Image.asset("assets/images/search.png")),
+            ],
+          )
+        ],
       ),
     );
   }

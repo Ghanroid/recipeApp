@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipefinal/login.dart';
-import 'package:recipefinal/spoon/recipe_model.dart';
+import 'package:recipefinal/spoon/screen/login.dart';
+import 'package:recipefinal/spoon/model/recipe_model.dart';
 import 'dart:math' as math;
 import 'package:recipefinal/spoon/screen/aftersearch.dart';
 import 'package:recipefinal/spoon/screen/recipedetails.dart';
-import 'package:recipefinal/spoon/spoonacular_api.dart';
+import 'package:recipefinal/spoon/api_services/spoonacular_api.dart';
 
 class SearchPage extends StatefulWidget {
   @override

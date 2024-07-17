@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 //import 'package:recipefinal/login.dart';
-import 'package:recipefinal/spoon/startingPage.dart';
+import 'package:recipefinal/spoon/screen/startingPage.dart';
 
 import 'firebase_options.dart';
 
